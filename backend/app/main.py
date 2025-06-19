@@ -34,9 +34,9 @@ async def lifespan(app: FastAPI):
     await redis_client.close()
 
 app = FastAPI(
-    title="QuantumBet API",
-    description="API para análise probabilística de apostas esportivas com Machine Learning",
-    version="1.0.0",
+    title="QuantumBet API v2.0",
+    description="Plataforma Enterprise de Análise Probabilística para Apostas Esportivas com IA Avançada",
+    version="2.0.0",
     lifespan=lifespan
 )
 
