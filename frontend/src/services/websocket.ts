@@ -52,6 +52,12 @@ class WebSocketService {
   }
 
   private initializeConnection() {
+    // Verificar se estamos no browser
+    if (typeof window === 'undefined') {
+      console.log('WebSocket: Não está no browser, pulando inicialização');
+      return;
+    }
+
     const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000';
     const token = localStorage.getItem('auth_token');
 

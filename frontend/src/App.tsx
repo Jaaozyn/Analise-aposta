@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, ProtectedRoute } from './contexts/AuthContext';
@@ -5,14 +7,10 @@ import Header from './components/Layout/Header';
 import PicksPage from './pages/PicksPage';
 import AnalysisPage from './pages/AnalysisPage';
 import BankrollPage from './pages/BankrollPage';
-import { useWebSocket, useAutoReconnect, useConnectionStatus } from './hooks/useWebSocket';
 import './styles/globals.css';
 
-// Componente Dashboard integrado com APIs e WebSocket
+// Componente Dashboard simplificado
 const Dashboard = () => {
-  const { isConnected } = useWebSocket();
-  const connectionStatus = useConnectionStatus();
-
   return (
     <div className="space-y-8 fade-in">
       
@@ -23,17 +21,6 @@ const Dashboard = () => {
           <p className="text-base text-gray-400">
             Bem-vindo à sua sala de análise. Aqui você encontra as melhores oportunidades do dia.
           </p>
-        </div>
-        
-        {/* Status da Conexão */}
-        <div className="flex items-center space-x-2 text-sm">
-          <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
-          <span className="text-gray-400">
-            {isConnected ? 'Tempo real ativo' : 'Reconectando...'}
-          </span>
-          {connectionStatus.latency > 0 && (
-            <span className="text-gray-500">({connectionStatus.latency}ms)</span>
-          )}
         </div>
       </div>
 
@@ -68,12 +55,6 @@ const Dashboard = () => {
           <div className="card-primary p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-white">Oportunidades de Valor de Hoje</h2>
-              {isConnected && (
-                <div className="flex items-center space-x-2 text-xs text-green-400">
-                  <div className="w-1 h-1 bg-green-400 rounded-full animate-pulse"></div>
-                  <span>Atualizando automaticamente</span>
-                </div>
-              )}
             </div>
             
             <div className="space-y-4">
@@ -177,7 +158,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Insights IA com WebSocket */}
+          {/* Insights IA */}
           <div className="card-primary p-6 mt-6">
             <h3 className="text-lg font-semibold text-white mb-4">Insights IA</h3>
             
@@ -220,9 +201,6 @@ const Dashboard = () => {
 // Componente principal da aplicação
 function MainApp() {
   const [currentPage, setCurrentPage] = useState('dashboard');
-  
-  // Hooks do WebSocket
-  useAutoReconnect(); // Auto-reconexão em background
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);

@@ -11,7 +11,7 @@ export const useWebSocket = () => {
   const [connectionStatus, setConnectionStatus] = useState({
     connected: false,
     reconnectAttempts: 0,
-    socketId: null
+    socketId: null as string | null
   });
 
   useEffect(() => {
