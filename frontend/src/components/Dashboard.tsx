@@ -22,7 +22,7 @@ interface DashboardProps {
   className?: string;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ className }) => {
+const Dashboard: React.FC<DashboardProps> = ({ className }) => {
   // Hooks para dados
   const { picks: todaysPicks, isLoading: picksLoading } = usePicks({ 
     endpoint: '/picks/today',
@@ -30,6 +30,39 @@ export const Dashboard: React.FC<DashboardProps> = ({ className }) => {
   });
   
   const { stats, isLoading: statsLoading } = useUserStats();
+
+  // Mock data para demonstração
+  const mockStats = {
+    monthlyROI: 12.5,
+    winRate: 64.2,
+    totalProfit: 2750,
+    activePicks: 5
+  };
+
+  const mockPicks = [
+    {
+      id: '1',
+      homeTeam: 'Manchester City',
+      awayTeam: 'Liverpool',
+      league: 'Premier League',
+      market: 'Over 2.5 Gols',
+      odds: 1.85,
+      expectedValue: 12.8,
+      confidence: 87,
+      kickoffTime: 'Hoje 15:30'
+    },
+    {
+      id: '2',
+      homeTeam: 'Lakers',
+      awayTeam: 'Warriors',
+      league: 'NBA',
+      market: 'Total Points Over 225.5',
+      odds: 1.92,
+      expectedValue: 8.4,
+      confidence: 74,
+      kickoffTime: 'Hoje 21:00'
+    }
+  ];
 
   return (
     <div className={`min-h-screen bg-dark-900 text-white ${className}`}>
@@ -254,4 +287,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ className }) => {
       </div>
     </div>
   );
-}; 
+};
+
+export default Dashboard; 

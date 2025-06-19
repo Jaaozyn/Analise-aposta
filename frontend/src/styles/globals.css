@@ -1,0 +1,361 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==============================================
+   QUANTUMBET - "SALA DE ANÁLISE" DESIGN SYSTEM
+   ============================================== */
+
+/* Custom Properties - Paleta de Cores Premium */
+:root {
+  /* Cores Principais - Dark Mode Premium */
+  --color-bg-primary: #1A1D22;      /* Grafite escuro - Fundo principal */
+  --color-bg-secondary: #252A31;     /* Grafite claro - Cards/Módulos */
+  --color-bg-tertiary: #2D3238;      /* Cinza médio - Hover states */
+  
+  /* Cor de Valor - A Joia do Sistema */
+  --color-value-primary: #FFBF00;    /* Dourado - EV+ Principal */
+  --color-value-secondary: #FFD700;  /* Dourado claro - Hover */
+  --color-value-dark: #CC9900;       /* Dourado escuro - Active */
+  
+  /* Cores de Informação */
+  --color-info-primary: #3B82F6;     /* Azul elétrico */
+  --color-info-secondary: #60A5FA;   /* Azul claro */
+  --color-text-primary: #FFFFFF;     /* Branco - Texto principal */
+  --color-text-secondary: #9CA3AF;   /* Cinza claro - Texto secundário */
+  --color-text-tertiary: #6B7280;    /* Cinza médio - Texto terciário */
+  
+  /* Cores de Status */
+  --color-success: #10B981;          /* Verde - Ganhos */
+  --color-success-bg: #064E3B;       /* Verde escuro - Background */
+  --color-error: #EF4444;            /* Vermelho - Perdas */
+  --color-error-bg: #7F1D1D;         /* Vermelho escuro - Background */
+  --color-warning: #F59E0B;          /* Amarelo - Avisos */
+  --color-warning-bg: #92400E;       /* Amarelo escuro - Background */
+  
+  /* Cores para Gráficos e Visualizações */
+  --color-chart-1: #3B82F6;          /* Azul */
+  --color-chart-2: #8B5CF6;          /* Roxo */
+  --color-chart-3: #06B6D4;          /* Ciano */
+  --color-chart-4: #84CC16;          /* Verde lima */
+  --color-chart-5: #F97316;          /* Laranja */
+  
+  /* Bordas e Divisores */
+  --color-border-primary: #374151;   /* Cinza - Bordas principais */
+  --color-border-secondary: #4B5563; /* Cinza claro - Bordas secundárias */
+  
+  /* Sombras e Efeitos */
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-value: 0 0 20px rgba(255, 191, 0, 0.3);
+  
+  /* Transições */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.35s ease;
+}
+
+/* ==============================================
+   BASE STYLES
+   ============================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==============================================
+   TYPOGRAPHY SYSTEM
+   ============================================== */
+
+.text-heading-1 {
+  @apply text-3xl font-bold text-white leading-tight;
+}
+
+.text-heading-2 {
+  @apply text-2xl font-semibold text-white leading-tight;
+}
+
+.text-heading-3 {
+  @apply text-xl font-semibold text-white leading-snug;
+}
+
+.text-heading-4 {
+  @apply text-lg font-medium text-white leading-snug;
+}
+
+.text-body-large {
+  @apply text-base text-gray-200 leading-relaxed;
+}
+
+.text-body {
+  @apply text-sm text-gray-300 leading-relaxed;
+}
+
+.text-body-small {
+  @apply text-xs text-gray-400 leading-relaxed;
+}
+
+.text-caption {
+  @apply text-xs text-gray-500 uppercase font-medium tracking-wider;
+}
+
+/* ==============================================
+   COMPONENT UTILITIES
+   ============================================== */
+
+/* Selo de EV+ - A Joia do Sistema */
+.ev-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-bold;
+  background: linear-gradient(135deg, var(--color-value-primary), var(--color-value-secondary));
+  color: var(--color-bg-primary);
+  box-shadow: var(--shadow-value);
+  animation: ev-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes ev-glow {
+  from { box-shadow: 0 0 10px rgba(255, 191, 0, 0.3); }
+  to { box-shadow: 0 0 20px rgba(255, 191, 0, 0.6); }
+}
+
+.ev-badge-large {
+  @apply ev-badge px-4 py-2 text-base;
+}
+
+.ev-badge-small {
+  @apply ev-badge px-2 py-1 text-xs;
+}
+
+/* Cards Premium */
+.card-primary {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-normal);
+}
+
+.card-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-border-secondary);
+}
+
+.card-value {
+  @apply card-primary;
+  border-color: var(--color-value-primary);
+  box-shadow: 0 0 0 1px var(--color-value-primary), var(--shadow-card);
+}
+
+.card-value:hover {
+  box-shadow: 0 0 0 2px var(--color-value-primary), var(--shadow-card-hover);
+}
+
+/* Botões Sistema */
+.btn-primary {
+  @apply px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg;
+  transition: all var(--transition-fast);
+}
+
+.btn-value {
+  background: linear-gradient(135deg, var(--color-value-primary), var(--color-value-secondary));
+  @apply px-6 py-3 text-gray-900 font-bold rounded-lg;
+  transition: all var(--transition-fast);
+}
+
+.btn-value:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-value);
+}
+
+.btn-secondary {
+  @apply px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-lg;
+  transition: all var(--transition-fast);
+}
+
+.btn-ghost {
+  @apply px-6 py-3 text-gray-300 hover:text-white hover:bg-gray-800 font-medium rounded-lg;
+  transition: all var(--transition-fast);
+}
+
+/* Status Indicators */
+.status-positive {
+  @apply text-green-400 bg-green-900/20 px-2 py-1 rounded text-sm font-medium;
+}
+
+.status-negative {
+  @apply text-red-400 bg-red-900/20 px-2 py-1 rounded text-sm font-medium;
+}
+
+.status-neutral {
+  @apply text-gray-400 bg-gray-800/50 px-2 py-1 rounded text-sm font-medium;
+}
+
+/* Progress Bars */
+.progress-bar {
+  @apply w-full bg-gray-800 rounded-full h-2;
+}
+
+.progress-fill {
+  @apply h-full rounded-full transition-all duration-500;
+}
+
+.progress-value {
+  @apply progress-fill;
+  background: linear-gradient(90deg, var(--color-value-primary), var(--color-value-secondary));
+}
+
+.progress-success {
+  @apply progress-fill bg-green-500;
+}
+
+.progress-info {
+  @apply progress-fill bg-blue-500;
+}
+
+/* ==============================================
+   LAYOUT UTILITIES
+   ============================================== */
+
+.container-main {
+  @apply max-w-7xl mx-auto px-6;
+}
+
+.container-narrow {
+  @apply max-w-4xl mx-auto px-6;
+}
+
+.section-spacing {
+  @apply py-8;
+}
+
+.grid-dashboard {
+  @apply grid grid-cols-1 lg:grid-cols-3 gap-8;
+}
+
+.grid-cards {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.grid-stats {
+  @apply grid grid-cols-2 lg:grid-cols-4 gap-4;
+}
+
+/* ==============================================
+   ANIMATION UTILITIES
+   ============================================== */
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pulse-value {
+  animation: pulseValue 2s ease-in-out infinite;
+}
+
+@keyframes pulseValue {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* ==============================================
+   RESPONSIVE DESIGN
+   ============================================== */
+
+/* Mobile First - Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .container-main,
+  .container-narrow {
+    @apply px-4;
+  }
+  
+  .grid-dashboard {
+    @apply grid-cols-1 gap-6;
+  }
+  
+  .grid-stats {
+    @apply grid-cols-1 gap-4;
+  }
+  
+  .text-heading-1 {
+    @apply text-2xl;
+  }
+  
+  .text-heading-2 {
+    @apply text-xl;
+  }
+}
+
+/* ==============================================
+   SCROLLBAR STYLING
+   ============================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-secondary);
+}
+
+/* ==============================================
+   FOCUS STATES
+   ============================================== */
+
+*:focus {
+  outline: 2px solid var(--color-value-primary);
+  outline-offset: 2px;
+}
+
+button:focus {
+  outline: 2px solid var(--color-value-primary);
+  outline-offset: 2px;
+}
+
+/* ==============================================
+   PRINT STYLES
+   ============================================== */
+
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+  }
+} 
