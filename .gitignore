@@ -1,0 +1,145 @@
+# ========================================
+# QUANTUMBET - GITIGNORE
+# ========================================
+
+# Variáveis de Ambiente (CRÍTICO - NÃO SUBIR)
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ========================================
+# BACKEND (Python)
+# ========================================
+
+# Dependências Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv/
+.ENV/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# Models e Data (arquivos grandes)
+models/*.joblib
+models/*.pkl
+models/*.h5
+data/raw/
+data/processed/
+*.csv
+*.parquet
+
+# ========================================
+# FRONTEND (Node.js)
+# ========================================
+
+# Dependências Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build Output
+.next/
+out/
+dist/
+build/
+
+# Cache
+.cache/
+.parcel-cache/
+
+# ========================================
+# DOCKER & INFRAESTRUTURA
+# ========================================
+
+# Docker
+.docker/
+
+# Volumes Docker
+postgres_data/
+redis_data/
+grafana_data/
+prometheus_data/
+
+# SSL Certificates
+nginx/ssl/*.pem
+nginx/ssl/*.key
+nginx/ssl/*.crt
+
+# ========================================
+# SISTEMA
+# ========================================
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Temporários
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Backup files
+*.bak
+*.backup
+
+# ========================================
+# ESPECÍFICOS DO PROJETO
+# ========================================
+
+# Chaves API (NUNCA SUBIR)
+api_keys.txt
+secrets.txt
+credentials.json
+
+# Dados sensíveis
+user_data/
+backups/
+dumps/
+
+# Logs específicos
+celery.log
+gunicorn.log
+nginx.log 

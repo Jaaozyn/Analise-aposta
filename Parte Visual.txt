@@ -1,0 +1,69 @@
+Prompt (UI/UX Design) para Plataforma de Apostas Esportivas "QuantumBet"
+Título do Projeto de Design: "A Sala de Análise" – Interface de Confiança e Engajamento para Apostas Inteligentes
+
+Objetivo Principal do Design (The "Why"):
+Nossa missão é transformar a aposta esportiva de um jogo de azar em uma disciplina analítica. A interface deve posicionar o usuário não como um simples apostador, mas como um analista com acesso a uma ferramenta de nível profissional. O design precisa ser sóbrio, limpo e inspirar confiança, combatendo a impulsividade e promovendo a tomada de decisão baseada em valor. O usuário deve sentir que está em sua "sala de análise" particular, com todos os dados de que precisa para tomar decisões inteligentes.
+
+Persona do Usuário-Alvo:
+
+Nome: Bruno
+Nível: Entusiasta de esportes e apostador amador. Adora a emoção dos jogos, mas frequentemente perde dinheiro em "apostas de coração" ou seguindo dicas sem fundamento em redes sociais.
+Objetivo: Ser mais lucrativo e sistemático. Quer entender o "porquê" por trás de uma boa aposta e parar de agir por impulso.
+Frustração: "Eu amo esportes, mas sinto que estou apenas jogando na loteria. Vejo muitas estatísticas, mas não sei como conectá-las a uma aposta de valor real."
+Princípios de Design e Estratégias de Engajamento:
+1. Laboratório, Não Cassino:
+
+A estética deve ser a de uma ferramenta de análise financeira, não de um site de apostas online. Evite cores berrantes, animações piscantes ou qualquer elemento que remeta a caça-níqueis. A seriedade visual constrói confiança no modelo de dados.
+2. Clareza Obsessiva:
+
+Dados e estatísticas devem ser apresentados de forma limpa e fácil de digerir. Use gráficos, barras de progresso e visualizações de dados para transformar números complexos em insights compreensíveis à primeira vista.
+Hierarquia é Tudo: O olho do usuário deve ser guiado naturalmente. A informação mais importante (ex: o Valor Esperado - EV+) deve ter o maior destaque visual.
+3. Visualização do "Valor":
+
+O conceito de EV+ é o produto principal. Ele precisa ser um elemento visual central. Crie um "Medidor de Valor" ou um "Selo de EV+" em cada dica gerada. A cor deste selo pode mudar de acordo com a força do valor encontrado (ex: amarelo para EV+ baixo, dourado para EV+ alto).
+4. Disciplina Recompensada (Gamificação Ética):
+
+Em vez de celebrar apenas vitórias, gamifique a disciplina. Crie "conquistas" e "streaks" para:
+"Você seguiu 10 dicas de EV+ consecutivamente."
+"Primeiro mês com ROI (Retorno sobre Investimento) positivo."
+"Analisou 5 partidas a fundo esta semana."
+O painel de Gestão de Banca deve ser um ponto central de orgulho, com um gráfico proeminente mostrando o crescimento do capital do usuário ao longo do tempo.
+5. Jornada de Dados Transparente:
+
+Não basta dar a dica, é preciso mostrar o trabalho. Cada "pick" deve ser um portal para uma análise mais profunda. O usuário deve ser capaz de clicar em qualquer estatística da justificativa (ex: "85% de aproveitamento em casa") e ver os dados brutos que comprovam essa informação. Isso gera confiança e educa o usuário.
+Identidade Visual e Moodboard:
+Paleta de Cores (Dark Mode é o padrão):
+Fundo: Cinza grafite muito escuro (ex: #1A1D22).
+Cards/Módulos: Um tom sutilmente mais claro de cinza (ex: #252A31).
+Cor de Valor/Destaque (EV+): Âmbar ou Dourado (ex: #FFBF00). Esta cor representa prestígio, qualidade e valor, diferenciando-se totalmente dos concorrentes.
+Cor de Informação/Neutra: Azul elétrico ou branco para textos e dados gerais.
+Cores de Suporte (Gráficos): Uma paleta de cores análogas (azuis, roxos, cianos) para visualizações de dados que não conflitem com a cor de valor.
+Iconografia: Nítida, moderna e universalmente compreendida para cada esporte. Use ícones lineares e consistentes.
+Visual Geral: Sóbrio, premium, focado em dados. Inspiração em painéis de análise de dados (dashboards), plataformas de BI (Business Intelligence) e o design de aplicativos como o da ESPN ou The Athletic.
+Detalhamento do Design por Tela (Screen-by-Screen):
+1. Dashboard (A Central de Comando):
+
+Widget principal: "Oportunidades de Valor de Hoje", mostrando os 3 a 5 jogos com o maior EV+ identificado pelo modelo.
+Widget de "Gestão de Banca": Um gráfico de linha proeminente mostrando o lucro/prejuízo e o ROI do usuário. Este é o feedback mais importante.
+Widget "Próximos Jogos na sua Lista": Um calendário visual dos jogos que o usuário marcou como favoritos.
+2. Feed de Dicas (Picks):
+
+Layout em cards. Cada card representa uma dica.
+No topo de cada card, o "Selo de EV+" dourado com o percentual de valor encontrado.
+Informações claras: Times, mercado, odd mínima e unidade sugerida.
+Um botão "Ver Análise Completa" que leva à página da partida.
+3. Análise de Partida (O "Dossiê"):
+
+Esta é a tela mais rica em dados. Layout de duas colunas, comparando "Time A" vs. "Time B".
+Módulos visuais para cada tipo de análise:
+Confronto Direto (H2H): Linha do tempo visual dos últimos encontros.
+Forma Recente: Sequência visual de Vitórias/Derrotas/Empates (ex: V-V-D-E-V).
+Análise do Modelo: Gráficos de pizza ou barras mostrando as probabilidades calculadas pelo sistema para cada resultado (Vitória/Empate/Derrota, etc.).
+Status dos Jogadores: Cards simples mostrando os principais jogadores e seu status (ativo, lesionado, etc.).
+4. Gestão de Banca (O Relatório de Performance):
+
+Interface focada em um grande gráfico de performance.
+Métricas chave em destaque: Lucro Total, ROI (%), Taxa de Acerto (%), Unidades ganhas/perdidas.
+Filtros para ver o desempenho por esporte, por mercado ou por período de tempo.
+Entregável Solicitado:
+Gere mockups de alta fidelidade (Hi-Fi) para as quatro telas principais descritas acima (Dashboard, Feed de Dicas, Análise de Partida, Gestão de Banca) no modo escuro. Crie também um mini Design System contendo: a paleta de cores (com ênfase no dourado como cor de valor), os estilos de tipografia, a iconografia para os 4 esportes e o design dos componentes-chave (botões, cards, gráficos e o "Selo de EV+").
