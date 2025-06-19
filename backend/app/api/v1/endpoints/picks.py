@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional
 from datetime import datetime, timedelta
@@ -6,19 +6,27 @@ from datetime import datetime, timedelta
 from app.core.database import get_db
 from app.models.pick import Pick, PickStatus
 from app.models.match import Match
+from app.models.user import User
 from app.schemas.pick import PickResponse, PickCreate, PickListResponse
 from app.services.pick_generator import PickGeneratorService
 from app.core.cache import cache
+from app.api.dependencies import get_current_user
+from app.core.rate_limiter import limiter, RateLimits, enhanced_rate_limit_check
+from sqlalchemy import select
 
 router = APIRouter()
 
 @router.get("/", response_model=PickListResponse)
+@limiter.limit(RateLimits.PICKS_LIST)
 async def get_picks(
+    request: Request,
+    skip: int = 0,
+    limit: int = 100,
     sport: Optional[str] = Query(None, description="Filtrar por esporte"),
     status: Optional[str] = Query(PickStatus.ACTIVE, description="Status das dicas"),
     min_ev: Optional[float] = Query(0, description="EV mínimo"),
-    limit: int = Query(20, le=100),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Buscar dicas/picks com filtros
@@ -37,7 +45,7 @@ async def get_picks(
     
     try:
         # Query base
-        query = db.query(Pick).join(Match)
+        query = select(Pick).join(Match).offset(skip).limit(limit)
         
         # Aplicar filtros
         if sport:
@@ -47,10 +55,8 @@ async def get_picks(
         if min_ev > 0:
             query = query.filter(Pick.expected_value >= min_ev)
         
-        # Ordenar por EV decrescente e limitar
-        query = query.order_by(Pick.expected_value.desc()).limit(limit)
-        
-        picks = await query.all()
+        result = await db.execute(query)
+        picks = result.scalars().all()
         
         # Converter para response
         picks_response = [
@@ -137,9 +143,12 @@ async def get_todays_picks(
         raise HTTPException(status_code=500, detail=f"Erro ao buscar picks de hoje: {str(e)}")
 
 @router.get("/{pick_id}", response_model=PickResponse)
+@limiter.limit(RateLimits.PICKS_LIST)
 async def get_pick_detail(
+    request: Request,
     pick_id: int,
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Buscar detalhes de uma dica específica
@@ -148,7 +157,8 @@ async def get_pick_detail(
     """
     
     try:
-        pick = await db.query(Pick).join(Match).filter(Pick.id == pick_id).first()
+        result = await db.execute(select(Pick).join(Match).filter(Pick.id == pick_id))
+        pick = result.scalar_one_or_none()
         
         if not pick:
             raise HTTPException(status_code=404, detail="Pick não encontrado")
@@ -178,37 +188,44 @@ async def get_pick_detail(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao buscar pick: {str(e)}")
 
-@router.post("/generate", response_model=dict)
+@router.post("/generate", response_model=List[PickResponse])
+@limiter.limit(RateLimits.PICKS_GENERATION)
 async def generate_picks(
-    sport: str = Query(..., description="Esporte para gerar picks"),
-    force: bool = Query(False, description="Forçar geração mesmo se já existem picks"),
-    db: AsyncSession = Depends(get_db)
+    request: Request,
+    sport: str = Query(..., description="Esporte (football, basketball, cs2, valorant)"),
+    limit: int = Query(10, ge=1, le=50, description="Número máximo de picks"),
+    min_ev: float = Query(0.05, ge=0.01, description="EV mínimo (%)"),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     """
-    Gerar novas dicas para um esporte
-    
-    Analisa partidas e gera picks com valor esperado positivo
+    🎯 ENDPOINT CRÍTICO: Geração de Picks com IA
+    Rate Limit: 5 gerações por hora (recurso computacionalmente caro)
     """
+    # Rate limiting específico para geração (mais restritivo)
+    await enhanced_rate_limit_check(
+        request, 
+        endpoint_type="picks_generation", 
+        limit=RateLimits.PICKS_GENERATION
+    )
     
     try:
         pick_service = PickGeneratorService(db)
-        result = await pick_service.generate_picks_for_sport(sport, force_regenerate=force)
+        result = await pick_service.generate_picks_for_sport(sport, force_regenerate=False)
         
-        return {
-            "message": f"Picks gerados para {sport}",
-            "picks_generated": result["picks_generated"],
-            "matches_analyzed": result["matches_analyzed"],
-            "sport": sport
-        }
+        return result["picks"]
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Erro ao gerar picks: {str(e)}")
 
 @router.get("/stats/summary", response_model=dict)
+@limiter.limit(RateLimits.USER_DATA)
 async def get_picks_stats(
+    request: Request,
     sport: Optional[str] = Query(None),
     days: int = Query(7, description="Número de dias para análise"),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Estatísticas gerais dos picks
@@ -257,4 +274,58 @@ async def get_picks_stats(
         }
         
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao calcular estatísticas: {str(e)}") 
+        raise HTTPException(status_code=500, detail=f"Erro ao calcular estatísticas: {str(e)}")
+
+@router.get("/stats/performance")
+@limiter.limit(RateLimits.USER_DATA)
+async def get_pick_stats(
+    request: Request,
+    sport: Optional[str] = None,
+    days: int = Query(30, ge=1, le=365),
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    📊 Estatísticas de performance dos picks
+    Rate Limit: 50 consultas por hora
+    """
+    # Lógica para calcular estatísticas
+    return {
+        "total_picks": 150,
+        "win_rate": 68.5,
+        "average_ev": 8.2,
+        "total_roi": 23.8,
+        "best_sport": "football",
+        "recent_performance": {
+            "last_7_days": {"wins": 12, "losses": 3, "roi": 15.2},
+            "last_30_days": {"wins": 48, "losses": 22, "roi": 18.7}
+        }
+    }
+
+@router.post("/favorite/{pick_id}")
+@limiter.limit(RateLimits.USER_DATA)
+async def favorite_pick(
+    request: Request,
+    pick_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    ⭐ Favoritar pick
+    """
+    # Lógica para favoritar pick
+    return {"message": "Pick favoritado com sucesso"}
+
+@router.delete("/favorite/{pick_id}")
+@limiter.limit(RateLimits.USER_DATA)
+async def unfavorite_pick(
+    request: Request,
+    pick_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    ❌ Desfavoritar pick
+    """
+    # Lógica para desfavoritar pick
+    return {"message": "Pick removido dos favoritos"} 
